@@ -65,11 +65,11 @@ Check [SilentMoowalk#PreviousWork](https://github.com/klezVirus/SilentMoonwalk?t
 
 ## Technical Notes (17/12/2025)
 
-For this specific POC, I used some very, very specific gadget `wininet.dll` to bypass Eclipse. This gadget is not found in all builds and is version dependent. I extended the check to ensure that if there is a compatible gadget is going to be used.
+* For this specific POC, I used some very, very specific gadget `wininet.dll` to bypass Eclipse. This gadget is not found in all builds and is version dependent. I extended the check to ensure that if there is a compatible gadget is going to be used.
+* In a similar way, the Big Stack Pivot gadget in KernelBase `ADD RSP, 0x1538`had a similar limitation. To make this more stable I updated the POC to dynamically search a general BIG pattern in multiple DLLs  and dynamically extract the size. Any size bigger than 0x500 bytes is considered fine by the POC.
+* Another bug I was notified about pertained to the `SetThreadContext` API. On certain machines, I had to use a non-volatile register to pass the references to the SPOOFER configuration while hijacking the thread context.
 
-In a similar way, the Big Stack Pivot gadget in KernelBase `ADD RSP, 0x1538`had a similar limitation. To make this more stable I updated the POC to dynamically search a general BIG pattern in multiple DLLs  and dynamically extract the size. Any size bigger than 0x500 bytes is considered fine by the POC.
-
-Another bug I was notified about pertained to the `SetThreadContext` API. On certain machines, I had to use a non-volatile register to pass the references to the SPOOFER configuration while hijacking the thread context.
+Big thanks to [Samir Bousseaden](@SBousseaden) for notifing the issues!
 
 ## Additional Notes
 
