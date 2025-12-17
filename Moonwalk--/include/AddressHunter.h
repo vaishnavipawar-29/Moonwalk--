@@ -648,7 +648,7 @@ PVOID PICCreateRemoteThread(HANDLE hProcess, LPVOID lpStartAddress, LPVOID fakeS
     }
 
     ctx.Rcx = (DWORD64)lpStartAddress;
-    ctx.R9 = (DWORD64)lpParameter;
+    ctx.R15 = (DWORD64)lpParameter;
     
     ctxRet = SetThreadContextFp(hThread, &ctx);
     if (!ctxRet) {

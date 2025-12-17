@@ -12,6 +12,8 @@
 #define _OUTPUT 1
 #endif // !_OUTPUT
 
+#define MINIMUM_JUMP_SIZE 0x500
+#define WILDCARD_BYTE 0xCC 
 #define SEED 123456
 #define MAX_FRAMES 154
 // Remove if you have a self-made definition of memcmp
@@ -324,72 +326,71 @@ int rand(unsigned long int next) // RAND_MAX assumed as 256 + 20
 
 #endif
 
-BOOL SearchGadget(HMODULE hMod, byte pattern[], DWORD dwLenPattern, PVOID* ppGadgetAddress) {
 
-    BOOL bFound = FALSE;
+#define WILDCARD_BYTE 0xCC
+BOOL SearchGadget(
+    HMODULE hMod,
+    byte pattern[],
+    DWORD dwLenPattern,
+    PVOID* ppGadgetAddress,
+    DWORD* pStartOffset  // offset within .text section
+) {
     BOOL bSuccess = FALSE;
     PVOID pBufTextMemory = NULL;
     DWORD sizeText = 0;
+    DWORD textSectionVA = 0;
 
-    PIMAGE_DOS_HEADER pDosHdr = NULL;
-    PIMAGE_NT_HEADERS pNtHdrs = NULL;
-    PIMAGE_SECTION_HEADER pSectionHdr = NULL;
+    PIMAGE_DOS_HEADER pDosHdr = (PIMAGE_DOS_HEADER)hMod;
+    PIMAGE_NT_HEADERS pNtHdrs = (PIMAGE_NT_HEADERS)((BYTE*)hMod + pDosHdr->e_lfanew);
+    PIMAGE_SECTION_HEADER pSectionHdr = (PIMAGE_SECTION_HEADER)((BYTE*)&pNtHdrs->OptionalHeader + sizeof(IMAGE_OPTIONAL_HEADER));
 
     char text[] = { '.', 't','e','x','t', 0x00 };
 
-    pDosHdr = (PIMAGE_DOS_HEADER)hMod;
-    pNtHdrs = (PIMAGE_NT_HEADERS)((byte*)hMod + pDosHdr->e_lfanew);
-    pSectionHdr = (PIMAGE_SECTION_HEADER)((byte*)&pNtHdrs->OptionalHeader + sizeof(IMAGE_OPTIONAL_HEADER));
-
     for (int i = 0; i < pNtHdrs->FileHeader.NumberOfSections; i++) {
-
         if (my_strcmp((char*)pSectionHdr->Name, text) == 0) {
-
             pBufTextMemory = PICVirtualAlloc(pSectionHdr->Misc.VirtualSize, PAGE_READWRITE);
             if (pBufTextMemory == NULL)
-                return bSuccess;
+                return FALSE;
 
             custom_memcpy(pBufTextMemory, (byte*)((byte*)hMod + pSectionHdr->VirtualAddress), pSectionHdr->Misc.VirtualSize);
-
             sizeText = pSectionHdr->Misc.VirtualSize;
-
+            textSectionVA = pSectionHdr->VirtualAddress;
             break;
-
         }
 
-        pSectionHdr = (PIMAGE_SECTION_HEADER)((byte*)pSectionHdr + sizeof(IMAGE_SECTION_HEADER));
-
+        pSectionHdr = (PIMAGE_SECTION_HEADER)((BYTE*)pSectionHdr + sizeof(IMAGE_SECTION_HEADER));
     }
 
     if (pBufTextMemory == NULL)
-        return bSuccess;
+        return FALSE;
 
-    unsigned int i = 0;
-    for (i = 0; i < sizeText && bFound == FALSE; i++) {
-        for (unsigned int j = 0; j < dwLenPattern; j++) {
-            if (*((byte*)pBufTextMemory + i + j) != pattern[j]) {
-                bFound = FALSE;
+    DWORD start = (pStartOffset != NULL) ? *pStartOffset : 0;
+
+    for (DWORD i = start; i <= sizeText - dwLenPattern; i++) {
+        BOOL match = TRUE;
+
+        for (DWORD j = 0; j < dwLenPattern; j++) {
+            BYTE current = *((BYTE*)pBufTextMemory + i + j);
+
+            if (pattern[j] != WILDCARD_BYTE && current != pattern[j]) {
+                match = FALSE;
                 break;
             }
-            else {
-                bFound = TRUE;
-            }
+        }
+
+        if (match) {
+            *ppGadgetAddress = (BYTE*)hMod + textSectionVA + i;
+
+            if (pStartOffset)
+                *pStartOffset = i + 1;
+
+            bSuccess = TRUE;
+            break;
         }
     }
 
-    if (bFound == FALSE) {
-        if (pBufTextMemory)
-            PICVirtualFree(pBufTextMemory);
-
-        return bSuccess;
-    }
-
-    *ppGadgetAddress = (byte*)hMod + pSectionHdr->VirtualAddress + i - 1;
-
-    bSuccess = TRUE;
     if (pBufTextMemory)
         PICVirtualFree(pBufTextMemory);
 
     return bSuccess;
-
 }

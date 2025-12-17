@@ -18,8 +18,10 @@ spoof_call proc
 	mov	    rax, rsp
 	mov     [rsp+08h], rbp
 	mov     [rsp+10h], rbx
-	mov     rcx, r9
+	mov     rcx, r15
 	mov     r11, rcx
+	xor     r15, r15
+
 	mov	    [rcx+0C0h], rax
 ;   ------------------------------------------------------------------------------------
 ;   Creating a stack reference to the JMP RBX gadget
@@ -84,10 +86,10 @@ spoof_call proc
 	push    1 ; r10
 	push    1 ; r9
 	push    1 ; r8
-	push    [r11+0a0h]	
-	push    [r11+028h]
-	push    [r11+098h]	
-	push    [r11+020h]
+	push    qword ptr [r11+0a0h]	
+	push    qword ptr [r11+028h]
+	push    qword ptr [r11+098h]
+	push    qword ptr [r11+020h]
 	
 	sub     rsp, 028h
 	push    [r11+030h]

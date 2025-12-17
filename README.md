@@ -38,6 +38,17 @@ The POC is expecting a PID of `OneDrive.exe` to be provided as a CLI argument. T
 
 This proof of concept has minimal operational security and is intentionally rough. Its primary purpose is to substantiate the theoretical claims discussed in the blog post [Malware Just Got Its Free Passes Back!](https://klezvirus.github.io/posts/Moonwalk-plus-plus/). 
 
+## Execute
+
+Careful when testing! The Loader will cause OneDrive to pop a MessageBox, but the popup may not be visible immediately, and if you keep going with the loader BEFORE cliclicking on the "OK" button of MessageBox, it will crash the process! The correct execution order is: 
+
+1. Execute moonwalk (print first messages)
+2. Check that all the gadgets have been correctly identified
+3. Press Enter to Execute once
+4. At this stage, an Icon in the TaskBar (OneDrive Directory) should have apepared, click on it, it will reveal the MessageBox popup
+5. Click OK on the MessageBox so the Thread can return and execute the appropriate decryption chains
+6. Now go back to the Moonwalk console and you can repeat the process
+
 ## Build
 
 In order to build the POC and observe a similar behaviour to the one in the picture, ensure to:
@@ -52,7 +63,15 @@ In order to build the POC and observe a similar behaviour to the one in the pict
 
 Check [SilentMoowalk#PreviousWork](https://github.com/klezVirus/SilentMoonwalk?tab=readme-ov-file#previous-work).
 
-## Notes
+## Technical Notes (17/12/2025)
+
+For this specific POC, I used some very, very specific gadget `wininet.dll` to bypass Eclipse. This gadget is not found in all builds and is version dependent. I extended the check to ensure that if there is a compatible gadget is going to be used.
+
+In a similar way, the Big Stack Pivot gadget in KernelBase `ADD RSP, 0x1538`had a similar limitation. To make this more stable I updated the POC to dynamically search a general BIG pattern in multiple DLLs  and dynamically extract the size. Any size bigger than 0x500 bytes is considered fine by the POC.
+
+Another bug I was notified about pertained to the `SetThreadContext` API. On certain machines, I had to use a non-volatile register to pass the references to the SPOOFER configuration while hijacking the thread context.
+
+## Additional Notes
 
 * This POC was made only to support and proof the feasibility to combine Stack Moonwalk and Memory Encryption. As the previous POC (SilentMoonwalk), it is not production ready and needs a lot of testing before integrating into C2 frameworks or similar. Use at your own risk.
 * I'm not planning extensions for this technique, at least for now.
